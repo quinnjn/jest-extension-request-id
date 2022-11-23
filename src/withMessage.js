@@ -55,7 +55,7 @@ const wrapMatcher = (matcher, customMessage, config) => {
       const matcherMessage =
         typeof error.matcherResult.message === 'function' ? error.matcherResult.message() : error.matcherResult.message;
 
-      const messagePrefix = config.showPrefix ? 'Custom message:\n  ' : '';
+      const messagePrefix = config.showPrefix ? 'Custom message goes here:\n  ' : '';
       const messageSuffix = formatRequestIds();
 
       const message = () => "test" + messagePrefix + customMessage + (config.showMatcherMessage ? '\n\n' + matcherMessage : '') + messageSuffix;
