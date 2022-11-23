@@ -10,7 +10,6 @@ class JestAssertionError extends Error {
 }
 
 const formatRequestIds = () => {
-  console.log({REQUEST_IDS: process.env.REQUEST_IDS});
   if (process.env.REQUEST_IDS) {
     console.log({env: process.env.REQUEST_IDS});
     const lines = [
