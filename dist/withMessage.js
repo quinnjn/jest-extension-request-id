@@ -19,9 +19,6 @@ class JestAssertionError extends Error {
 
 const formatRequestIds = () => {
   if (process.env.REQUEST_IDS) {
-    console.log({
-      env: process.env.REQUEST_IDS
-    });
     const lines = ['\n', 'Request Ids during this test:'];
     lines.push(...process.env.REQUEST_IDS.split(','));
     return lines.join('\n');
