@@ -47,15 +47,17 @@ const wrapMatcher = (matcher, customMessage, config) => {
       }
       const { matcherResult } = error;
 
+      const matcherMessage = typeof error.matcherResult.message === 'function' ? error.matcherResult.message() : error.matcherResult.message;
+      const messageSuffix = formatRequestIds();
+
       if (typeof customMessage !== 'string' || customMessage.length < 1) {
-        throw new JestAssertionError(matcherResult, newMatcher);
+        throw new JestAssertionError({
+          ...matcherResult,
+          message: `${matcherMessage}${messageSuffix}`
+        }, newMatcher);
       }
 
-      const matcherMessage =
-        typeof error.matcherResult.message === 'function' ? error.matcherResult.message() : error.matcherResult.message;
-
       const messagePrefix = config.showPrefix ? 'Custom message:\n  ' : '';
-      const messageSuffix = formatRequestIds();
 
       const message = () => messagePrefix + customMessage + (config.showMatcherMessage ? '\n\n' + matcherMessage : '') + messageSuffix.toString();
 
@@ -95,11 +97,7 @@ export default (expect) => {
         showStack: typeof options.showStack === 'boolean' ? options.showStack : true
       };
       let matchers = expect(actual); // partially apply expect to get all matchers and chain them
-      if (customMessage) {
-        // only pay the cost of proxying matchers if we received a customMessage
-        matchers = wrapMatchers(matchers, customMessage, config);
-      }
-
+      matchers = wrapMatchers(matchers, customMessage, config);
       return matchers;
     },
     expect // clone additional properties on expect

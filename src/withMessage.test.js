@@ -238,6 +238,38 @@ describe('withMessage()', () => {
     }
   });
 
+  test('lists request ids when no custom message is present', () => {
+    expect.assertions(1);
+
+    process.env.REQUEST_IDS = ['abc123', 'def456'];
+    debugger;
+    const originalError = new Error('Boo');
+    const matcherMessage = 'expected ACTUAL to not be ACTUAL';
+    originalError.matcherResult = {
+      actual: ACTUAL,
+      expected: 1,
+      message: matcherMessage,
+      pass: false
+    };
+    const toBeMock = jest.fn(() => {
+      throw originalError;
+    });
+    const expectMock = jest.fn(() => ({ toBe: toBeMock }));
+
+    try {
+      withMessage(expectMock)(ACTUAL).toBe(1);
+    } catch (e) {
+      expect(e.message).toMatchInlineSnapshot(`
+"expected ACTUAL to not be ACTUAL
+
+Request Ids during this test:
+abc123
+def456"
+`);
+    }
+  });
+
+
   test('throws error with empty stack when `config.showStack` is false', () => {
     expect.assertions(4);
     const originalError = new Error('Boo');
