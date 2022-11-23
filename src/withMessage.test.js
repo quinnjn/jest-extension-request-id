@@ -264,18 +264,6 @@ describe('withMessage()', () => {
     }
   });
 
-  test('resets REQUEST_IDS after test', () => {
-    expect.assertions(3);
-    process.env.REQUEST_IDS = ['abc123', 'def456'];
-    const toBeMock = jest.fn();
-    const expectMock = jest.fn(() => ({ toBe: toBeMock }));
-
-    withMessage(expectMock)(ACTUAL, 'should fail').toBe(ACTUAL);
-    expect(expectMock).toHaveBeenCalledWith(ACTUAL);
-    expect(toBeMock).toHaveBeenCalledWith(ACTUAL);
-    expect(process.env.REQUEST_IDS).toBeUndefined();
-  });
-
   test('appends requestIds when they exist', () => {
     expect.assertions(4);
     process.env.REQUEST_IDS = ['abc123', 'def456'];

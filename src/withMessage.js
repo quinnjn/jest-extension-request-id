@@ -39,8 +39,6 @@ const wrapMatcher = (matcher, customMessage, config) => {
       }
     } catch (e) {
       rethrowWithMessage(e);
-    } finally {
-      delete process.env.REQUEST_IDS;
     }
 
     function rethrowWithMessage(error) {
