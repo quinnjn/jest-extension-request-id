@@ -9,6 +9,22 @@ class JestAssertionError extends Error {
   }
 }
 
+const formatRequestIds = () => {
+  if (process.env.REQUEST_IDS) {
+    console.log({env: process.env.REQUEST_IDS});
+    const lines = [
+      '\n',
+      'Request Ids during this test:',
+    ];
+
+    lines.push(...process.env.REQUEST_IDS.split(','));
+
+    return lines.join('\n');
+  }
+
+  return "";
+}
+
 const wrapMatcher = (matcher, customMessage, config) => {
   const newMatcher = (...args) => {
     try {
@@ -39,8 +55,10 @@ const wrapMatcher = (matcher, customMessage, config) => {
         typeof error.matcherResult.message === 'function' ? error.matcherResult.message() : error.matcherResult.message;
 
       const messagePrefix = config.showPrefix ? 'Custom message:\n  ' : '';
+      const messageSuffix = formatRequestIds();
 
-      const message = () => messagePrefix + customMessage + (config.showMatcherMessage ? '\n\n' + matcherMessage : '');
+      const message = () => messagePrefix + customMessage + (config.showMatcherMessage ? '\n\n' + matcherMessage : '') + messageSuffix.toString();
+
       const e = new JestAssertionError({ ...matcherResult, message }, newMatcher);
 
       if (!config.showStack) {
