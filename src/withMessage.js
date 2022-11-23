@@ -58,7 +58,7 @@ const wrapMatcher = (matcher, customMessage, config) => {
       const messagePrefix = config.showPrefix ? 'Custom message goes here:\n  ' : '';
       const messageSuffix = formatRequestIds();
 
-      const message = () => "test" + messagePrefix + customMessage + (config.showMatcherMessage ? '\n\n' + matcherMessage : '') + messageSuffix;
+      const message = () => messagePrefix + customMessage + (config.showMatcherMessage ? '\n\n' + matcherMessage : '') + messageSuffix.toString();
 
       const e = new JestAssertionError({ ...matcherResult, message }, newMatcher);
 
