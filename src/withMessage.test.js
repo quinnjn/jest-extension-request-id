@@ -334,4 +334,61 @@ def456"
       expect(toBeMock).toHaveBeenCalledWith(1);
     }
   });
+
+  test('clears REQUEST_IDS after consuming', () => {
+    expect.assertions(8);
+    process.env.REQUEST_IDS = ['abc123', 'def456'];
+    const originalError = new Error('Boo');
+    originalError.matcherResult = {
+      actual: ACTUAL,
+      expected: 1,
+      message: () => 'expected ACTUAL to be 1',
+      pass: false
+    };
+
+    const toBeMock = jest.fn(() => {
+      throw originalError;
+    });
+    const expectMock = jest.fn(() => ({ toBe: toBeMock }));
+
+    try {
+      withMessage(expectMock)(ACTUAL, 'should fail').toBe(1);
+    } catch (e) {
+      expect(e.matcherResult).toMatchObject({
+        actual: ACTUAL,
+        expected: 1,
+        pass: false
+      });
+      expect(e.message).toMatchInlineSnapshot(`
+"Custom message:
+  should fail
+
+expected ACTUAL to be 1
+
+Request Ids during this test:
+abc123
+def456"
+`);
+      expect(expectMock).toHaveBeenCalledWith(ACTUAL);
+      expect(toBeMock).toHaveBeenCalledWith(1);
+    }
+
+    try {
+      withMessage(expectMock)(ACTUAL, 'should fail').toBe(1);
+    } catch (e) {
+      expect(e.matcherResult).toMatchObject({
+        actual: ACTUAL,
+        expected: 1,
+        pass: false
+      });
+      expect(e.message).toMatchInlineSnapshot(`
+"Custom message:
+  should fail
+
+expected ACTUAL to be 1"
+`);
+      expect(expectMock).toHaveBeenCalledWith(ACTUAL);
+      expect(toBeMock).toHaveBeenCalledWith(1);
+    }
+  });
 });

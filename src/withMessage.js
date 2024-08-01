@@ -18,6 +18,7 @@ const formatRequestIds = () => {
 
     lines.push(...process.env.REQUEST_IDS.split(','));
 
+    delete process.env.REQUEST_IDS;
     return lines.join('\n');
   }
 
