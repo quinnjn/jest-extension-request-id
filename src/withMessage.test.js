@@ -262,7 +262,7 @@ describe('withMessage()', () => {
       expect(e.message).toMatchInlineSnapshot(`
 "expected ACTUAL to not be ACTUAL
 
-Request Ids during this test:
+Request IDs during this test:
 abc123
 def456"
 `);
@@ -296,7 +296,7 @@ def456"
     }
   });
 
-  test('appends requestIds when they exist', () => {
+  test('appends requestIDs when they exist', () => {
     expect.assertions(4);
     process.env.REQUEST_IDS = ['abc123', 'def456'];
     const originalError = new Error('Boo');
@@ -326,7 +326,7 @@ def456"
 
 expected ACTUAL to be 1
 
-Request Ids during this test:
+Request IDs during this test:
 abc123
 def456"
 `);
@@ -365,7 +365,7 @@ def456"
 
 expected ACTUAL to be 1
 
-Request Ids during this test:
+Request IDs during this test:
 abc123
 def456"
 `);

@@ -13,7 +13,7 @@ const formatRequestIds = () => {
   if (process.env.REQUEST_IDS) {
     const lines = [
       '\n',
-      'Request Ids during this test:',
+      'Request IDs during this test:',
     ];
 
     lines.push(...process.env.REQUEST_IDS.split(','));
